@@ -1,0 +1,81 @@
+{
+  "name": "nx-project",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "nx-workspace",
+  "sourceRoot": "apps/nx-project/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/nx-project",
+        "index": "apps/nx-project/src/index.html",
+        "browser": "apps/nx-project/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/nx-project/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/nx-project/src/favicon.ico",
+          "apps/nx-project/src/assets"
+        ],
+        "styles": ["apps/nx-project/src/styles.scss"],
+        "scripts": [],
+        "server": "apps/nx-project/src/main.server.ts",
+        "prerender": true,
+        "ssr": {
+          "entry": "apps/nx-project/server.ts"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "nx-project:build:production"
+        },
+        "development": {
+          "buildTarget": "nx-project:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "nx-project:build"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "nx-project:build",
+        "staticFilePath": "dist/apps/nx-project/browser"
+      }
+    }
+  }
+}
